@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Front bilheteria">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="guarappwebbilheteria">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+
+  <title>guarappwebbilheteria</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.1//firebase-auth.js"></script>
+
+  <script>
+    var firebaseConfig =
+    {
+      apiKey: "AIzaSyBjYu5mLE80U3IpQty9FHBucadCCmLny5k",
+      authDomain: "guarapp-91591.firebaseapp.com",
+      databaseURL: "https://guarapp-91591.firebaseio.com",
+      projectId: "guarapp-91591",
+      storageBucket: "guarapp-91591.appspot.com",
+      messagingSenderId: "142427592543",
+      appId: "1:142427592543:web:6e6e4a9013b4bc34de48ea",
+      measurementId: "G-DX0E6WLMFS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    firebase.firestore();
+    firebase.auth();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+  <script>
+  //https://stackoverflow.com/questions/61161135/adding-support-for-navigator-mediadevices-getusermedia-to-dart
+        navigator.getUserMedia = function(constraints, success, error){
+            console.log('rewrited navigator.getUserMedia');
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then((mediaStream) => {
+                success(mediaStream);
+            })
+            .catch((err) => {
+                error(err);
+            });
+        };
+  </script>
+  <script src="jsQR.js" type="application/javascript"></script>
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>
