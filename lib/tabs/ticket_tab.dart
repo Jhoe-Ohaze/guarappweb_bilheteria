@@ -43,7 +43,8 @@ class _TicketTabState extends State<TicketTab>
         canConfirm.value = false;
         productID = _controller.text;
         if (productID.isNotEmpty &&
-            (productID.length > 20 && productID.length < 30)) {
+            (productID.length > 20 && productID.length < 30))
+        {
           year = productID.substring(0, 4);
           month = productID.substring(4, 6);
           day = productID.substring(6, 8);
@@ -51,7 +52,8 @@ class _TicketTabState extends State<TicketTab>
       });
     }
 
-    void confirm() async {
+    void confirm() async
+    {
       await Firestore.instance
           .collection('payments')
           .document('years')
