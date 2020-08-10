@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 class ProductScreen extends StatefulWidget
 {
   final FirebaseUser user;
-  final String productid;
+  final String productid, year, month, day;
 
-  ProductScreen(this.user, this.productid);
+  ProductScreen(this.user, this.productid, this.year, this.month, this.day);
   @override
-  _ProductScreenState createState() => _ProductScreenState(user, productid);
+  _ProductScreenState createState() => _ProductScreenState(user, productid, year, month, day);
 }
 
 class _ProductScreenState extends State<ProductScreen>
 {
-  final String productid;
+  final String productid, year, month, day;
   FirebaseUser user;
   ValueNotifier<bool> canConfirm = ValueNotifier<bool>(false);
-  _ProductScreenState(this.user, this.productid);
+  _ProductScreenState(this.user, this.productid, this.year, this.month, this.day);
   ScrollController scrollController = ScrollController();
   GlobalKey<ScaffoldState> _scaffoldController = GlobalKey<ScaffoldState>();
 
@@ -29,15 +29,16 @@ class _ProductScreenState extends State<ProductScreen>
 
     void confirm() async
     {
+      canConfirm.value = false;
       user = await FirebaseAuth.instance.currentUser();
       await Firestore.instance
           .collection('payments')
           .document('years')
-          .collection('2020')
+          .collection(year)
           .document('months')
-          .collection('08')
+          .collection(month)
           .document('days')
-          .collection('06')
+          .collection(day)
           .document(productid)
           .updateData({
         'confirmed_status': '${user.email}, ${DateTime.now()}'
@@ -59,19 +60,18 @@ class _ProductScreenState extends State<ProductScreen>
       QuerySnapshot snapshot = await Firestore.instance
           .collection('payments')
           .document('years')
-          .collection('2020')
+          .collection(year)
           .document('months')
-          .collection('08')
+          .collection(month)
           .document('days')
-          .collection('06')
+          .collection(day)
           .where('order_number', isEqualTo: productid)
           .getDocuments();
       if (snapshot.documents.isNotEmpty) canConfirm.value = true;
       if (snapshot.documents.isEmpty){;}
       else if (snapshot.documents
           .elementAt(0)
-          .data
-          .containsKey('confirmed_status')) canConfirm.value = false;
+          .data['confirmed_status'] != '') canConfirm.value = false;
       return snapshot;
     }
 
@@ -114,7 +114,7 @@ class _ProductScreenState extends State<ProductScreen>
                 Map rndmap = querySnapshot.documents.elementAt(0).data;
 
                 Map map;
-                if (rndmap['confirmed_status'] != null)
+                if (rndmap['confirmed_status'] != '')
                 {
                   map =
                   {

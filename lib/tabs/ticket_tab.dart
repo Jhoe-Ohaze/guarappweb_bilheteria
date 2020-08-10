@@ -43,17 +43,80 @@ class _TicketTabState extends State<TicketTab>
         canConfirm.value = false;
         productID = _controller.text;
         if (productID.isNotEmpty &&
-            (productID.length > 20 && productID.length < 30))
+            (productID.length < 23))
         {
-          year = productID.substring(0, 4);
-          month = productID.substring(4, 6);
-          day = productID.substring(6, 8);
+          year = productID.substring(0, 1);
+          switch(year)
+          {
+            case 'a': year = '2020'; break;
+            case 'b': year = '2021'; break;
+            case 'c': year = '2022'; break;
+            case 'd': year = '2023'; break;
+            case 'e': year = '2024'; break;
+            case 'f': year = '2025'; break;
+            case 'g': year = '2026'; break;
+          }
+
+          month = productID.substring(1, 2);
+          switch(month)
+          {
+            case 'a': month = '01'; break;
+            case 'b': month = '02'; break;
+            case 'c': month = '03'; break;
+            case 'd': month = '04'; break;
+            case 'e': month = '05'; break;
+            case 'f': month = '06'; break;
+            case 'g': month = '07'; break;
+            case 'h': month = '08'; break;
+            case 'i': month = '09'; break;
+            case 'j': month = '10'; break;
+            case 'k': month = '11'; break;
+            case 'l': month = '12'; break;
+          }
+
+          day = productID.substring(2, 3);
+          switch(day)
+          {
+            case '1': day = '01'; break;
+            case '2': day = '02'; break;
+            case '3': day = '03'; break;
+            case '4': day = '04'; break;
+            case '5': day = '05'; break;
+            case '6': day = '06'; break;
+            case '7': day = '07'; break;
+            case '8': day = '08'; break;
+            case '9': day = '09'; break;
+            case 'a': day = '10'; break;
+            case 'b': day = '11'; break;
+            case 'c': day = '12'; break;
+            case 'd': day = '13'; break;
+            case 'e': day = '14'; break;
+            case 'f': day = '15'; break;
+            case 'g': day = '16'; break;
+            case 'h': day = '17'; break;
+            case 'i': day = '18'; break;
+            case 'j': day = '19'; break;
+            case 'k': day = '20'; break;
+            case 'l': day = '21'; break;
+            case 'm': day = '22'; break;
+            case 'n': day = '23'; break;
+            case 'o': day = '24'; break;
+            case 'p': day = '25'; break;
+            case 'q': day = '26'; break;
+            case 'r': day = '27'; break;
+            case 's': day = '28'; break;
+            case 't': day = '29'; break;
+            case 'u': day = '30'; break;
+            case 'v': day = '31'; break;
+          }
+
         }
       });
     }
 
     void confirm() async
     {
+      canConfirm.value = false;
       await Firestore.instance
           .collection('payments')
           .document('years')
@@ -91,12 +154,10 @@ class _TicketTabState extends State<TicketTab>
           .where('order_number', isEqualTo: productID)
           .getDocuments();
       if (snapshot.documents.isNotEmpty) canConfirm.value = true;
-      if (snapshot.documents.isEmpty)
-        ;
+      if (snapshot.documents.isEmpty);
       else if (snapshot.documents
           .elementAt(0)
-          .data
-          .containsKey('confirmed_status')) canConfirm.value = false;
+          .data['confirmed_status'] != '') canConfirm.value = false;
       return snapshot;
     }
 
@@ -206,7 +267,7 @@ class _TicketTabState extends State<TicketTab>
                 Map rndmap = querySnapshot.documents.elementAt(0).data;
 
                 Map map;
-                if (rndmap['confirmed_status'] != null)
+                if (rndmap['confirmed_status'] != '')
                 {
                   map =
                   {

@@ -19,33 +19,22 @@ class _SearchTabState extends State<SearchTab>
   _SearchTabState(this.user);
 
   String cpf = '';
-  String name = '';
-  String year = '2020', month = '08', day = '06';
+  String year = '2020', month = '08', day = '13';
 
   bool firstRun = true;
   bool confirmed = false;
 
   TextEditingController _controller = TextEditingController();
-  TextEditingController _controller2 = TextEditingController();
   ScrollController scrollController = ScrollController();
 
   void checkCustomer()
   {
     cpf = _controller.text;
-    name = '';
-    setState((){});
-  }
-
-  void checkName()
-  {
-    name = _controller2.text;
-    cpf = '';
     setState((){});
   }
 
   void loadConfirmed()
   {
-    name = '';
     cpf = '';
     confirmed = true;
     setState((){});
@@ -53,7 +42,6 @@ class _SearchTabState extends State<SearchTab>
 
   void loadUnconfirmed()
   {
-    name = '';
     cpf = '';
     confirmed = false;
     setState((){});
@@ -61,7 +49,8 @@ class _SearchTabState extends State<SearchTab>
 
   void openProduct(productid)
   {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => ProductScreen(this.user, productid)));
+    Navigator.push(context, new MaterialPageRoute(builder: (context) =>
+        ProductScreen(this.user, productid, year, month, day)));
   }
 
   @override
@@ -85,19 +74,6 @@ class _SearchTabState extends State<SearchTab>
               .where('customer_identity', isEqualTo: cpf)
               .getDocuments();
         }
-      else if(name != '')
-      {
-        snapshot = await Firestore.instance
-            .collection('payments')
-            .document('years')
-            .collection(year)
-            .document('months')
-            .collection(month)
-            .document('days')
-            .collection(day)
-            .where('customer_name', isEqualTo: name)
-            .getDocuments();
-      }
       else
       {
         if(!confirmed)
@@ -154,40 +130,6 @@ class _SearchTabState extends State<SearchTab>
                 child:
                 Text("Pesquisar", style: TextStyle(color: Colors.white))),
             onPressed: checkCustomer,
-            color: Colors.blue,
-          )
-        ],
-      );
-    }
-
-    Widget fieldAndButton2() {
-      return Row(
-        children: [
-          Container(
-            width: width - 155,
-            padding: EdgeInsets.only(right: 5),
-            child: TextField(
-              decoration: InputDecoration
-                (
-                labelText: "Nome",
-                hintText: "Nome do cliente",
-                border: OutlineInputBorder(),
-              ),
-              inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9]"))
-              ],
-              controller: _controller2,
-            ),
-          ),
-          FlatButton(
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            child: Container(
-                height: 60,
-                alignment: Alignment.center,
-                child:
-                Text("Pesquisar", style: TextStyle(color: Colors.white))),
-            onPressed: checkName,
             color: Colors.blue,
           )
         ],
@@ -306,8 +248,6 @@ class _SearchTabState extends State<SearchTab>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             fieldAndButton(),
-            SizedBox(height: 5),
-            fieldAndButton2(),
             Divider(),
             allButton(),
             Divider(thickness: 2),
