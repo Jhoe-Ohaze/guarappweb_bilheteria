@@ -12,10 +12,12 @@ class InfoScreen extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<InfoScreen> {
+class _InfoScreenState extends State<InfoScreen>
+{
   int _currentIndex = 0;
   final FirebaseUser user;
   _InfoScreenState(this.user);
+  DateTime targetDate = DateTime(2020, 09, 10);
 
   void _onItemTapped(index) {
     setState(() => _currentIndex = index);

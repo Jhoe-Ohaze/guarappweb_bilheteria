@@ -19,7 +19,7 @@ class _SearchTabState extends State<SearchTab>
   _SearchTabState(this.user);
 
   String cpf = '';
-  String year = '2020', month = '08', day = '13';
+  String year = '2020', month = '09', day = '10';
 
   bool firstRun = true;
   bool confirmed = false;
@@ -208,25 +208,33 @@ class _SearchTabState extends State<SearchTab>
                 List<DocumentSnapshot> mapList = querySnapshot.documents;
                 mapList.sort((a, b) => a.data['customer_name'].compareTo(b.data['customer_name']));
                 
-                return Container(
-                    height: height - 395,
-                    child: Scrollbar(
-                        isAlwaysShown: true,
-                        controller: scrollController,
-                        child: ListView.builder(
-                          controller: scrollController,
-                          shrinkWrap: true,
-                          itemCount: mapList.length,
-                          itemBuilder: (context, index) {
-                            String tkey = mapList.elementAt(index).data['customer_name'];
-                            String value = mapList.elementAt(index).data['created_date'];
-                            return ListTile(
-                              onTap: () => openProduct(mapList.elementAt(index).data['order_number']),
-                              title: Text(tkey),
-                              subtitle: Text(value),
-                            );
-                          },
-                        )));
+                return Container
+                (
+                  height: height - 395,
+                  child: Scrollbar
+                  (
+                    isAlwaysShown: true,
+                    controller: scrollController,
+                    child: ListView.builder
+                    (
+                      controller: scrollController,
+                      shrinkWrap: true,
+                      itemCount: mapList.length,
+                      itemBuilder: (context, index)
+                      {
+                        String tkey = mapList.elementAt(index).data['customer_name'];
+                        String value = '${mapList.elementAt(index).data['product_adult_amount']}'
+                            ' - ${mapList.elementAt(index).data['created_date']}';
+                        return ListTile
+                        (
+                          onTap: () => openProduct(mapList.elementAt(index).data['order_number']),
+                          title: Text(tkey),
+                          subtitle: Text(value),
+                        );
+                      },
+                    )
+                  )
+                );
               }
               break;
             default:

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:guarappwebbilheteria/screens/qr_screen.dart';
 
 class TicketTab extends StatefulWidget
 {
@@ -24,8 +23,6 @@ class _TicketTabState extends State<TicketTab>
       'Produto não encontrado, verifique se o código digitado está correto.';
 
   bool firstRun = true;
-
-  static const IconData qricon = IconData(0xe800, fontFamily: 'qricon', fontPackage: null);
 
   TextEditingController _controller = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -169,38 +166,23 @@ class _TicketTabState extends State<TicketTab>
         [
           Container
           (
-            width: width - 160,
-            padding: EdgeInsets.all(5),
-            child: Row
-            (
-              children:
+            width: width - 155,
+            padding: EdgeInsets.only(right: 5),
+            child: TextField
+              (
+              decoration: InputDecoration
+                (
+                labelText: "ID",
+                hintText: "Código do produto (ID)",
+                border: OutlineInputBorder(),
+              ),
+              inputFormatters: <TextInputFormatter>
               [
-                Container
-                (
-                  width: width - 240,
-                  child: TextField
-                  (
-                    decoration: InputDecoration
-                    (
-                      labelText: "ID",
-                      hintText: "Código do produto (ID)",
-                      border: OutlineInputBorder(),
-                    ),
-                    inputFormatters: <TextInputFormatter>
-                    [
-                      WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9]"))
-                    ],
-                    controller: _controller,
-                  ),
-                ),
-                IconButton
-                (
-                  icon: Icon(qricon),
-                  iconSize: 50,
-                  onPressed: () => Navigator.of(context).push
-                    (MaterialPageRoute(builder: (context) => QrScreen(_controller))),
-                )
+                WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9]"))
               ],
+              controller: _controller,
+              onSubmitted: (value) => checkProduct(),
+              onTap: () => _controller.text = '',
             ),
           ),
           FlatButton(
